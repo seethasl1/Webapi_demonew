@@ -1,0 +1,123 @@
+﻿@model Webapi_demonew.Models.Comment
+
+@{
+
+    ViewBag.Title = "InsertComment";
+
+    Layout = null;
+
+}
+
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript">
+        function PostData() {
+
+var Commenta = { "UserComment": $("#UserComment").val() };
+
+$.ajax({
+
+type: "POST",
+
+data: Commenta,
+
+url: '@Url.Action("Post", "api/values")',
+
+success: function (data) {
+
+GetData();
+
+},
+
+});
+
+}
+
+    </script >
+
+    <script type="text/javascript" >
+
+    function GetData() {
+        $("#DivCom").empty();
+        $.ajax({
+
+                type: "GET",
+
+                contentType: 'application/json; charset=utf-8',
+
+                url: 'https://localhost:44305/api/Values',
+
+                dataType: "json",
+
+                success: function (data) {
+
+                    $.each(data, function (i, mobj) {
+
+                        $("#DivCom").append('<table class="table"><tr><td width="50px">' mobj.UserComment '</td></tr><div style="margin-top: 2px"></div>');
+
+                    });
+
+                    $("#DivCom").append('</table>');
+
+                }
+
+            });
+    }
+
+    </script>
+
+
+
+    @using (Html.BeginForm())
+
+    {
+
+        @Html.ValidationSummary(true)
+
+        <div class="container">
+
+            <div style="margin-top: 5px"></div>
+
+            <div class="col-md-12">
+
+                @Html.LabelFor(model => model.UserComment)
+
+            </div>
+
+            <div style="margin-top: 5px"></div>
+
+            <div class="col-md-12">
+
+                @Html.TextBoxFor(model => model.UserComment, new { @class = "form-control" })
+
+                @Html.ValidationMessageFor(model => model.UserComment)
+
+            </div>
+
+            <div style="margin-top: 5px"></div>
+
+            <div class="col-md-12">
+
+                <input type="button" onclick="PostData();" value="Add Comment" />
+
+            </div>
+
+            <div style="margin-top: 10px"></div>
+
+            <div id="DivCom">
+
+            </div>
+
+        </div>
+
+    }
+
+    @section Scripts {
+
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }
+
+
+
